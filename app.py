@@ -49,27 +49,27 @@ def init_db():
         sample_products = [
             (
                 "NVIDIA RTX 4060", "NVIDIA", "การ์ดจอ", 12990, 10,
-                "8GB", "RTX 4060", "-", "https://via.placeholder.com/500x300?text=RTX+4060",
+                "8GB", "RTX 4060", "-", "https://down-th.img.susercontent.com/file/th-11134207-7r992-lo7qvlpjtgqa42@resize_w900_nl.webp",
                 "การ์ดจอสำหรับเล่นเกมและงานกราฟิก", "VRAM 8GB, DLSS, Ray Tracing"
             ),
             (
                 "AMD Ryzen 5 7600", "AMD", "CPU", 7990, 12,
-                "-", "-", "Ryzen 5 7600", "https://via.placeholder.com/500x300?text=Ryzen+5+7600",
+                "-", "-", "Ryzen 5 7600", "https://down-th.img.susercontent.com/file/6cc0cae1862dd1d64762c80f7a9466b1@resize_w900_nl.webp",
                 "ซีพียู 6 คอร์ 12 เธรด เหมาะกับเกมและงานทั่วไป", "6 Cores, 12 Threads, AM5"
             ),
             (
                 "Corsair DDR5 16GB", "Corsair", "RAM", 2490, 20,
-                "16GB DDR5", "-", "-", "https://via.placeholder.com/500x300?text=DDR5+16GB",
+                "16GB DDR5", "-", "-", "https://www.jib.co.th/img_master/product/original/2023050410591059326_1.jpg",
                 "แรมสำหรับเครื่องประกอบรุ่นใหม่", "Bus 5600MHz, 16GB x 1"
             ),
             (
                 "Intel Core i5-14400F", "Intel", "CPU", 8290, 15,
-                "-", "-", "Core i5-14400F", "https://via.placeholder.com/500x300?text=i5-14400F",
+                "-", "-", "Core i5-14400F", "https://down-th.img.susercontent.com/file/th-11134207-7ra0i-mdva6smnwl2p7b@resize_w900_nl.webp",
                 "ซีพียูยอดนิยมสำหรับเกมเมอร์", "10 Cores, 16 Threads, LGA1700"
             ),
             (
                 "ASUS RTX 4070 SUPER", "ASUS", "การ์ดจอ", 24990, 5,
-                "12GB", "RTX 4070 SUPER", "-", "https://via.placeholder.com/500x300?text=RTX+4070+SUPER",
+                "12GB", "RTX 4070 SUPER", "-", "https://www.autonetpc.com/wp-content/uploads/2024/01/h732.png",
                 "การ์ดจอระดับสูงสำหรับเล่นเกม 2K", "VRAM 12GB, Ray Tracing, DLSS 3"
             ),
         ]
@@ -691,4 +691,5 @@ if __name__ == "__main__":
         except sqlite3.OperationalError:
             init_db()
 
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5050, debug=True)
