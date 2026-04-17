@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}หน้าสินค้า{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>ค้นหาและกรองสินค้า</h2>
+    <form method="get" action="{{ url_for('index') }}">
+        <div class="row-2">
+            <div>
+                <label>ค้นหาสินค้า</label>
+                <input type="text" name="search" placeholder="เช่น การ์ดจอ, CPU" value="{{ request.args.get('search', '') }}">
+            </div>
+            <div>
+                <label>แบรนด์</label>
+                <select name="brand">
+                    <option value="">ทั้งหมด</option>
+                    {% for b in brands %}
+                        <option value="{{ b.brand }}" {% if request.args.get('brand') == b.brand %}selected{% endif %}>{{ b.brand }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row-2">
+            <div>
+                <label>หมวดหมู่</label>
+                <select name="category">
+                    <option value="">ทั้งหมด</option>
+                    {% for c in categories %}
+                        <option value="{{ c.category }}" {% if request.args.get('category') == c.category %}selected{% endif %}>{{ c.category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>RAM</label>
+                <input type="text" name="ram" placeholder="เช่น 16GB" value="{{ request.args.get('ram', '') }}">
+            </div>
+        </div>
+
+        <div class="row-2">
+            <div>
+                <label>GPU</label>
+                <input type="text" name="gpu" placeholder="เช่น RTX 4060" value="{{ request.args.get('gpu', '') }}">
+            </div>
+            <div></div>
+        </div>
+
+        <div class="row-2">
+            <div>
+                <label>ราคาต่ำสุด</label>
+                <input type="number" name="min_price" value="{{ request.args.get('min_price', '') }}">
+            </div>
+            <div>
+                <label>ราคาสูงสุด</label>
+                <input type="number" name="max_price" value="{{ request.args.get('max_price', '') }}">
+            </div>
+        </div>
+
+        <button class="btn" type="submit">ค้นหา</button>
+        <a class="btn btn-gray" href="{{ url_for('index') }}">ล้างตัวกรอง</a>
+    </form>
+</div>
+
+<div class="grid">
+    {% for product in products %}
+        <div class="card product-card">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p class="small">แบรนด์: {{ product.brand }} | หมวดหมู่: {{ product.category }}</p>
+            <p class="price">{{ "%.2f"|format(product.price) }} บาท</p>
+            <p>{{ product.description }}</p>
+            <a class="btn" href="{{ url_for('product_detail', product_id=product.id) }}">ดูรายละเอียด</a>
+            <a class="btn btn-green" href="{{ url_for('add_to_cart', product_id=product.id) }}">เพิ่มลงตะกร้า</a>
+        </div>
+    {% else %}
+        <div class="card">
+            <p>ไม่พบสินค้า</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

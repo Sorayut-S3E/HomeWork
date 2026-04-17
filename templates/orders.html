@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}คำสั่งซื้อของฉัน{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>คำสั่งซื้อของฉัน</h2>
+
+    {% if orders %}
+        <table>
+            <tr>
+                <th>เลขคำสั่งซื้อ</th>
+                <th>จำนวนสินค้า</th>
+                <th>ยอดรวม</th>
+                <th>สถานะ</th>
+                <th>วันที่</th>
+                <th>รายละเอียด</th>
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.order_code }}</td>
+                    <td>{{ order.items|length }}</td>
+                    <td>{{ "%.2f"|format(order.grand_total) }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.created_at }}</td>
+                    <td><a class="btn" href="{{ url_for('order_detail', order_id=order.id) }}">ดู</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>ยังไม่มีคำสั่งซื้อ</p>
+    {% endif %}
+</div>
+{% endblock %}

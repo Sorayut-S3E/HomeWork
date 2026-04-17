@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="row-2">
+    <div class="card">
+        <h2>ข้อมูลจัดส่งและชำระเงิน</h2>
+        <form method="post" enctype="multipart/form-data">
+            <label>ที่อยู่จัดส่ง</label>
+            <textarea name="shipping_address" rows="5" required></textarea>
+
+            <label>วิธีชำระเงิน</label>
+            <select name="payment_method" id="payment_method" onchange="toggleSlipInput()">
+                <option value="bank_transfer">โอนเงิน</option>
+                <option value="card">บัตร</option>
+                <option value="ewallet">e-wallet</option>
+            </select>
+
+            <div id="slip_box">
+                <label>แนบสลิป (กรณีโอนเงิน)</label>
+                <input type="file" name="slip_file">
+            </div>
+
+            <button class="btn" type="submit">ยืนยันการสั่งซื้อ</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>สรุปคำสั่งซื้อ</h2>
+        {% for item in items %}
+            <p>{{ item.product.name }} x {{ item.qty }} = {{ "%.2f"|format(item.subtotal) }} บาท</p>
+        {% endfor %}
+        <hr>
+        <p>รวมสินค้า: {{ "%.2f"|format(total) }} บาท</p>
+        <p>ค่าจัดส่ง: {{ "%.2f"|format(shipping_fee) }} บาท</p>
+        <p class="price">ยอดสุทธิ: {{ "%.2f"|format(grand_total) }} บาท</p>
+    </div>
+</div>
+
+<script>
+function toggleSlipInput() {
+    const paymentMethod = document.getElementById("payment_method").value;
+    const slipBox = document.getElementById("slip_box");
+    slipBox.style.display = paymentMethod === "bank_transfer" ? "block" : "none";
+}
+toggleSlipInput();
+</script>
+{% endblock %}

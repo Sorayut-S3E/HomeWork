@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}รายละเอียดสินค้า{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="row-2">
+        <div>
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width:100%; border-radius:10px;">
+        </div>
+        <div>
+            <h2>{{ product.name }}</h2>
+            <p class="small">แบรนด์: {{ product.brand }} | หมวดหมู่: {{ product.category }}</p>
+            <p class="price">{{ "%.2f"|format(product.price) }} บาท</p>
+
+            <h3>สเปก</h3>
+            <ul>
+                <li>RAM: {{ product.ram or '-' }}</li>
+                <li>GPU: {{ product.gpu or '-' }}</li>
+                <li>CPU: {{ product.cpu or '-' }}</li>
+                <li>Stock: {{ product.stock }}</li>
+            </ul>
+
+            <p><strong>รายละเอียด:</strong> {{ product.description }}</p>
+            <p><strong>สเปกละเอียด:</strong> {{ product.specs_text }}</p>
+            <p><strong>คะแนนเฉลี่ย:</strong> {{ avg_rating }} / 5</p>
+
+            <a class="btn btn-green" href="{{ url_for('add_to_cart', product_id=product.id) }}">เพิ่มลงตะกร้า</a>
+
+            {% if session.get('member_id') %}
+                {% if product.id in wishlist_ids %}
+                    <a class="btn btn-orange" href="{{ url_for('toggle_wishlist', product_id=product.id) }}">ลบจาก Wishlist</a>
+                {% else %}
+                    <a class="btn btn-gray" href="{{ url_for('toggle_wishlist', product_id=product.id) }}">เพิ่มเข้า Wishlist</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>รีวิวสินค้า</h3>
+    {% if reviews %}
+        {% for review in reviews %}
+            <div style="border-bottom:1px solid #ddd; padding:10px 0;">
+                <strong>{{ review.member_name }}</strong> - {{ review.rating }}/5
+                <p>{{ review.comment }}</p>
+                <div class="small">{{ review.created_at }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>ยังไม่มีรีวิว</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>เพิ่มรีวิว</h3>
+    {% if session.get('member_id') %}
+        <form method="post">
+            <label>คะแนน</label>
+            <select name="rating" required>
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+            </select>
+
+            <label>คอมเมนต์</label>
+            <textarea name="comment" rows="4" required></textarea>
+
+            <button class="btn" type="submit">บันทึกรีวิว</button>
+        </form>
+    {% else %}
+        <p>กรุณาเข้าสู่ระบบก่อนรีวิว</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>สินค้าที่เกี่ยวข้อง</h3>
+    <div class="grid">
+        {% for item in related_products %}
+            <div class="product-card">
+                <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                <h4>{{ item.name }}</h4>
+                <p>{{ "%.2f"|format(item.price) }} บาท</p>
+                <a class="btn" href="{{ url_for('product_detail', product_id=item.id) }}">ดูรายละเอียด</a>
+            </div>
+        {% else %}
+            <p>ยังไม่มีสินค้าที่เกี่ยวข้อง</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

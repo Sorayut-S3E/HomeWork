@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Wishlist</h2>
+
+    {% if products %}
+        <div class="grid">
+            {% for product in products %}
+                <div class="card product-card">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ "%.2f"|format(product.price) }} บาท</p>
+                    <a class="btn" href="{{ url_for('product_detail', product_id=product.id) }}">ดูรายละเอียด</a>
+                    <a class="btn btn-danger" href="{{ url_for('toggle_wishlist', product_id=product.id) }}">ลบออก</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>ยังไม่มีสินค้าใน Wishlist</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}รายละเอียดคำสั่งซื้อ{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>รายละเอียดคำสั่งซื้อ</h2>
+    <p><strong>เลขคำสั่งซื้อ:</strong> {{ order.order_code }}</p>
+    <p><strong>สถานะ:</strong> {{ order.status }}</p>
+    <p><strong>วิธีชำระเงิน:</strong> {{ order.payment_method }}</p>
+    <p><strong>ที่อยู่จัดส่ง:</strong> {{ order.shipping_address }}</p>
+
+    {% if order.slip_filename %}
+        <p><strong>ไฟล์สลิป:</strong> {{ order.slip_filename }}</p>
+    {% endif %}
+
+    <h3>รายการสินค้า</h3>
+    <table>
+        <tr>
+            <th>สินค้า</th>
+            <th>ราคา</th>
+            <th>จำนวน</th>
+            <th>รวม</th>
+        </tr>
+        {% for item in order.items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ "%.2f"|format(item.price) }}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ "%.2f"|format(item.subtotal) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <p>รวมสินค้า: {{ "%.2f"|format(order.total_price) }} บาท</p>
+    <p>ค่าจัดส่ง: {{ "%.2f"|format(order.shipping_fee) }} บาท</p>
+    <p class="price">ยอดสุทธิ: {{ "%.2f"|format(order.grand_total) }} บาท</p>
+
+    {% if order.status == "รอชำระเงิน" %}
+        <a class="btn btn-orange" href="{{ url_for('confirm_payment', order_id=order.id) }}">จำลองยืนยันการชำระเงิน</a>
+    {% endif %}
+
+    {% if order.status == "กำลังจัดส่ง" %}
+        <a class="btn btn-green" href="{{ url_for('complete_order', order_id=order.id) }}">ยืนยันว่าได้รับสินค้าแล้ว</a>
+    {% endif %}
+</div>
+{% endblock %}

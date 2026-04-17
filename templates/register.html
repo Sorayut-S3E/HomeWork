@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}สมัครสมาชิก{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: auto;">
+    <h2>สมัครสมาชิก</h2>
+    <form method="post">
+        <label>ชื่อ - นามสกุล</label>
+        <input type="text" name="full_name" required>
+
+        <label>อีเมล</label>
+        <input type="email" name="email" required>
+
+        <label>รหัสผ่าน</label>
+        <input type="password" name="password" required>
+
+        <button class="btn" type="submit">สมัครสมาชิก</button>
+    </form>
+</div>
+{% endblock %}

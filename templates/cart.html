@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}ตะกร้าสินค้า{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>ตะกร้าสินค้า</h2>
+
+    {% if items %}
+        <form method="post" action="{{ url_for('update_cart') }}">
+            <table>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>รวม</th>
+                    <th>จัดการ</th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ "%.2f"|format(item.product.price) }}</td>
+                        <td>
+                            <input type="number" min="1" name="qty_{{ item.product.id }}" value="{{ item.qty }}">
+                        </td>
+                        <td>{{ "%.2f"|format(item.subtotal) }}</td>
+                        <td>
+                            <a class="btn btn-danger" href="{{ url_for('remove_from_cart', product_id=item.product.id) }}">ลบ</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <p class="price" style="margin-top: 15px;">ราคารวม: {{ "%.2f"|format(total) }} บาท</p>
+
+            <button class="btn" type="submit">อัปเดตตะกร้า</button>
+            <a class="btn btn-green" href="{{ url_for('checkout') }}">ไปหน้าชำระเงิน</a>
+        </form>
+    {% else %}
+        <p>ยังไม่มีสินค้าในตะกร้า</p>
+    {% endif %}
+</div>
+{% endblock %}
